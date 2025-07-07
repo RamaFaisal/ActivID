@@ -8,7 +8,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-[#f5f3f0] text-gray-900">
+<body class="bg-[#f5f3f0] text-gray-900 antialiased">
 
     {{-- Navbar --}}
     <x-navbar />
@@ -22,5 +22,4 @@
     <x-footer />
 
 </body>
-
 </html>
