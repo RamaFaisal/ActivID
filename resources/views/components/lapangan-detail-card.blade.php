@@ -24,15 +24,5 @@
             <h3 class="font-semibold">Deskripsi</h3>
             <p class="text-sm text-gray-700">{{ $description }}</p>
         </div>
-
-        {{-- Aturan Venue --}}
-        <div>
-            <h3 class="font-semibold">Aturan Venue</h3>
-            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                @foreach ($rules as $rule)
-                <li>{{ $rule }}</li>
-                @endforeach
-            </ul>
-        </div>
     </div>
 </div>

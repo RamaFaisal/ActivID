@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.admin')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Dashboard
@@ -55,4 +57,4 @@
             <p class="text-gray-500">Belum ada pengajuan mitra yang masuk.</p>
         @endif
     </div>
-</x-app-layout>
+@endsection

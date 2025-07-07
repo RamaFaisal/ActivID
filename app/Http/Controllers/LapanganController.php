@@ -75,7 +75,7 @@ class LapanganController extends Controller
             'gambar' => $pathGambar,
         ]);
 
-        return redirect()->route('lapangan-admin.index')->with('success', 'Lapangan berhasil ditambahkan.');
+        return redirect()->route('sesi.index')->with('success', 'Lapangan berhasil ditambahkan.');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lapangan;
 use App\Models\SesiSewaLapangan;
 use App\Models\SewaLapangan;
 use Carbon\Carbon;
@@ -140,5 +141,64 @@ class SewaLapanganController extends Controller
             ->get();
 
         return view('booking.index', compact('bookings'));
+    }
+
+    public function dompetAdmin()
+    {
+        $adminId = auth()->id();
+
+        // Ambil semua booking yang sudah disetujui & dibayar
+        $bookings = \App\Models\SewaLapangan::whereHas('lapangan', function ($q) use ($adminId) {
+            $q->where('user_id', $adminId); // asumsi 1 admin 1 lapangan
+        })
+            ->where('status_pembayaran_sewa', 'paid')
+            ->where('status_verifikasi_admin', 'disetujui')
+            ->get();
+
+        $totalPendapatan = $bookings->sum('jumlah_diterima');
+        $jumlahTransaksi = $bookings->count();
+
+        return view('lapangan.dompet', compact('bookings', 'totalPendapatan', 'jumlahTransaksi'));
+    }
+
+    public function createManual()
+    {
+        $lapangans = Lapangan::where('user_id', auth()->id())->get();
+        return view('lapangan.manual', compact('lapangans'));
+    }
+
+    public function storeManual(Request $request)
+    {
+        $request->validate([
+            'id_lapangan' => 'required|exists:lapangans,id',
+            'tanggal' => 'required|date',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+            'harga' => 'required|numeric|min:1000',
+        ]);
+
+        $durasi = Carbon::parse($request->jam_mulai)->diffInMinutes(\Carbon\Carbon::parse($request->jam_selesai));
+        $fee = intval($request->harga * 0.10);
+        $diterima = $request->harga - $fee;
+
+        SewaLapangan::create([
+            'id_user' => null, // Karena offline
+            'id_lapangan' => $request->id_lapangan,
+            'tanggal_sewa' => $request->tanggal,
+            'jam_mulai_sewa' => $request->jam_mulai,
+            'jam_selesai_sewa' => $request->jam_selesai,
+            'durasi_sewa' => $durasi,
+            'total_harga_sewa' => $request->harga,
+            'fee_platform' => $fee,
+            'jumlah_diterima' => $diterima,
+            'status_pembayaran_sewa' => 'paid',
+            'status_verifikasi_admin' => 'disetujui',
+            'status_checkin' => false,
+            'metode_pembayaran' => 'tunai',
+            'qr_code_verifikasi_sewa' => null,
+            'is_manual' => true,
+        ]);
+
+        return redirect()->route('admin.bookings')->with('success', 'Booking manual berhasil disimpan.');
     }
 }

@@ -2,6 +2,20 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <p class="text-2xl font-bold mb-4 text-center">Login</p>
+
+    <div class="flex items-center justify-start gap-1 text-sm text-gray-600 mb-4">
+        <span>Belum punya akun?</span>
+        @if (Route::has('register'))
+            <a href="{{ route('register') }}"
+               class="text-blue-600 hover:text-blue-800 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Daftar di sini
+            </a>
+        @endif
+    </div>
+    
+    
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 

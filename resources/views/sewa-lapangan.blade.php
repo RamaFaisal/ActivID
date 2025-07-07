@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 {{-- Hero / Banner --}}
 <div class="bg-gray-100">
 

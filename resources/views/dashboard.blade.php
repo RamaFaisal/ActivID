@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.admin')
+
+@section('content')
     {{-- Slot untuk header --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -17,7 +19,8 @@
         <h2 class="font-semibold text-blue-700">Panel Superadmin</h2>
         <ul class="list-disc ml-5 text-sm mt-2">
             <li><a href="{{ route('pengajuan.index')}}" class="text-blue-500 hover:underline">Kelola Pengajuan Admin Lapangan</a></li>
-            <li><a href="#" class="text-blue-500 hover:underline">Kelola User & Role</a></li>
+            <li><a href="{{ route('superadmin.index')}}" class="text-blue-500 hover:underline">Kelola User & Role</a></li>
+            <li><a href="{{ route('superadmin.saldo')}}" class="text-blue-500 hover:underline">Saldo</a></li>
         </ul>
     </div>
 
@@ -28,8 +31,10 @@
         <ul class="list-disc ml-5 text-sm mt-2">
             <li><a href="{{ route('lapangan-admin.create')}}" class="text-green-600 hover:underline">Tambah Lapangan</a></li>
             <li><a href="{{ route('sesi.index')}}" class="text-green-600 hover:underline">Kelola Jadwal & Sesi</a></li>
+            <li><a href="{{ route('manual.create')}}" class="text-green-600 hover:underline">Tambah Manual Booking</a></li>
             <li><a href="{{ route('admin.bookings')}}" class="text-green-600 hover:underline">Approve Booking</a></li>
             <li><a href="{{ route('scan.view')}}" class="text-green-600 hover:underline">Scan Booking</a></a></li>
+            <li><a href="{{ route('admin.dompet')}}" class="text-green-600 hover:underline">Saldo</a></li>
         </ul>
     </div>
 
@@ -54,4 +59,4 @@
     </div>
     @endif
 </div>
-</x-app-layout>
+@endsection

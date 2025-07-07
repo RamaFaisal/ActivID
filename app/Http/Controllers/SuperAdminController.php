@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PengajuanLapangan;
+use App\Models\SewaLapangan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -48,5 +49,18 @@ class SuperAdminController extends Controller
         $pengajuan->delete();
 
         return back()->with('success', 'Pengajuan berhasil ditolak dan dihapus.');
+    }
+
+    public function saldo()
+    {
+        $bookings = SewaLapangan::with('user', 'lapangan')
+            ->where('status_pembayaran_sewa', 'paid')
+            ->where('status_verifikasi_admin', 'disetujui')
+            ->get();
+
+        $totalFee = $bookings->sum('fee_platform');
+        $totalTransaksi = $bookings->count();
+
+        return view('superadmin.saldo', compact('bookings', 'totalFee', 'totalTransaksi'));
     }
 }

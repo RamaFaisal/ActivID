@@ -13,7 +13,7 @@
             All in One Platform untuk persewaan fasilitas olahraga dan jasa ticketing atau pendaftaran sebuah event
         </p>
         <div class="flex gap-4">
-            <a href="/sewa-lapangan" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow">
+            <a href="{{ route('lapangan.index')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow">
                 Sewa Lapangan →
             </a>
             <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow">
