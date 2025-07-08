@@ -4,7 +4,7 @@
         <nav class="flex items-center space-x-2">
             <a href="/" class="hover:underline">Home</a>
             <span>›</span>
-            <a href="/sewa-lapangan" class="hover:underline">Sewa Lapangan</a>
+            <a href="/lapangan" class="hover:underline">Daftar Lapangan</a>
             <span>›</span>
             <span class="text-white/80">{{ $title }}</span>
         </nav>

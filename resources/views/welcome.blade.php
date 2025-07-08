@@ -48,21 +48,24 @@
                 title="Stadion Citarum" 
                 location="Kota Semarang"
                 category="Tenis" 
-                price="Rp1.500.000" />
+                price="Rp1.500.000" 
+                link="/lapangan"/>
 
             <x-venue-card 
                 image="images/thearena.jpeg" 
                 title="The Arena" 
                 location="Kota Semarang" 
                 category="Tenis"
-                price="Rp300.000" />
+                price="Rp300.000" 
+                link="/lapangan"/>
 
             <x-venue-card 
                 image="images/golden.png" 
                 title="Golden" 
                 location="Kota Semarang" 
                 category="Tenis"
-                price="Rp35.000" />
+                price="Rp35.000" 
+                link="/lapangan"/>
         </div>
     </section>
 
