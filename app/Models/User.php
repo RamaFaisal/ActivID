@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Lapangan::class, 'user_id');
     }
+    public function pemesananTiketKonser()
+    {
+        return $this->hasMany(PemesananTiketKonser::class, 'id_pengguna');
+    }
 }

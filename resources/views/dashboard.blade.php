@@ -1,61 +1,87 @@
 @extends('layouts.admin')
 
 @section('content')
-    {{-- Slot untuk header --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Dashboard
-        </h2>
-    </x-slot>
+<div class="max-w-5xl mx-auto mt-10">
+    <div class="bg-white p-6 rounded shadow text-center">
+        <h2 class="text-2xl font-bold text-gray-800">Selamat datang, {{ Auth::user()->name }}</h2>
+        <p class="text-sm text-gray-500">Email: {{ Auth::user()->email }}</p>
+    </div>
 
-    {{-- Isi konten --}}
-    <div class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded shadow">
-    <p class="mb-2">Selamat datang, <strong>{{ Auth::user()->name }}</strong></p>
-    <p class="text-sm text-gray-600">Email: {{ Auth::user()->email }}</p>
-
+    {{-- SUPERADMIN --}}
     @if (Auth::user()->hasRole('superadmin'))
-    {{-- Superadmin Section --}}
-    <div class="mt-6 p-4 border border-blue-300 rounded bg-blue-50">
-        <h2 class="font-semibold text-blue-700">Panel Superadmin</h2>
-        <ul class="list-disc ml-5 text-sm mt-2">
-            <li><a href="{{ route('pengajuan.index')}}" class="text-blue-500 hover:underline">Kelola Pengajuan Admin Lapangan</a></li>
-            <li><a href="{{ route('superadmin.index')}}" class="text-blue-500 hover:underline">Kelola User & Role</a></li>
-            <li><a href="{{ route('superadmin.saldo')}}" class="text-blue-500 hover:underline">Saldo</a></li>
-        </ul>
+    <div class="mt-8">
+        <h3 class="text-xl font-semibold text-blue-700 mb-4">Panel Superadmin</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach ([
+                ['route' => 'pengajuan.index', 'label' => 'Kelola Pengajuan Admin Lapangan'],
+                ['route' => 'pengajuanKonser.index', 'label' => 'Kelola Pengajuan Admin Konser'],
+                ['route' => 'superadmin.konser.index', 'label' => 'Pengajuan Konser'],
+                ['route' => 'superadmin.index', 'label' => 'Kelola User & Role'],
+                ['route' => 'superadmin.saldo', 'label' => 'Saldo'],
+            ] as $item)
+            <a href="{{ route($item['route']) }}"
+                class="block p-4 rounded-lg bg-blue-50 border border-blue-200 hover:bg-blue-100 transition text-blue-700 shadow-sm">
+                {{ $item['label'] }}
+            </a>
+            @endforeach
+        </div>
     </div>
 
+    {{-- ADMIN LAPANGAN --}}
     @elseif (Auth::user()->hasRole('admin_lapangan'))
-    {{-- Admin Lapangan Section --}}
-    <div class="mt-6 p-4 border border-green-300 rounded bg-green-50">
-        <h2 class="font-semibold text-green-700">Panel Admin Lapangan</h2>
-        <ul class="list-disc ml-5 text-sm mt-2">
-            <li><a href="{{ route('lapangan-admin.create')}}" class="text-green-600 hover:underline">Tambah Lapangan</a></li>
-            <li><a href="{{ route('sesi.index')}}" class="text-green-600 hover:underline">Kelola Jadwal & Sesi</a></li>
-            <li><a href="{{ route('manual.create')}}" class="text-green-600 hover:underline">Tambah Manual Booking</a></li>
-            <li><a href="{{ route('admin.bookings')}}" class="text-green-600 hover:underline">Approve Booking</a></li>
-            <li><a href="{{ route('scan.view')}}" class="text-green-600 hover:underline">Scan Booking</a></a></li>
-            <li><a href="{{ route('admin.dompet')}}" class="text-green-600 hover:underline">Saldo</a></li>
-        </ul>
+    <div class="mt-8">
+        <h3 class="text-xl font-semibold text-green-700 mb-4">Panel Admin Lapangan</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach ([
+                ['route' => 'lapangan-admin.index', 'label' => 'Lapangan'],
+                ['route' => 'sesi.index', 'label' => 'Jadwal & Sesi'],
+                ['route' => 'manual.create', 'label' => 'Tambah Manual Booking'],
+                ['route' => 'admin.bookings', 'label' => 'Approve Booking'],
+                ['route' => 'scan.view', 'label' => 'Scan Booking'],
+                ['route' => 'admin.dompet', 'label' => 'Saldo'],
+            ] as $item)
+            <a href="{{ route($item['route']) }}"
+                class="block p-4 rounded-lg bg-green-50 border border-green-200 hover:bg-green-100 transition text-green-700 shadow-sm">
+                {{ $item['label'] }}
+            </a>
+            @endforeach
+        </div>
     </div>
 
+    {{-- ADMIN KONSER --}}
     @elseif (Auth::user()->hasRole('admin_konser'))
-    {{-- Admin Konser Section --}}
-    <div class="mt-6 p-4 border border-yellow-300 rounded bg-yellow-50">
-        <h2 class="font-semibold text-yellow-700">Panel Admin Konser</h2>
-        <ul class="list-disc ml-5 text-sm mt-2">
-            <li><a href="#" class="text-yellow-600 hover:underline">Tambah Konser</a></li>
-            <li><a href="#" class="text-yellow-600 hover:underline">Kelola Tiket</a></li>
-        </ul>
+    <div class="mt-8">
+        <h3 class="text-xl font-semibold text-yellow-700 mb-4">Panel Admin Konser</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach ([
+                ['route' => 'konser-admin.index', 'label' => 'Kelola Konser'],
+                ['route' => 'admin-tiket.index', 'label' => 'Kelola Tiket'],
+                ['route' => 'admin.verifikasi.index', 'label' => 'Verifikasi Tiket'],
+                ['route' => 'scan.index', 'label' => 'Scan QR Code'],
+                ['route' => 'admin.saldo', 'label' => 'Saldo'],
+            ] as $item)
+            <a href="{{ route($item['route']) }}"
+                class="block p-4 rounded-lg bg-yellow-50 border border-yellow-200 hover:bg-yellow-100 transition text-yellow-700 shadow-sm">
+                {{ $item['label'] }}
+            </a>
+            @endforeach
+        </div>
     </div>
 
+    {{-- USER --}}
     @elseif (Auth::user()->hasRole('user'))
-    {{-- User Biasa Section --}}
-    <div class="mt-6 p-4 border border-red-300 rounded bg-red-50">
-        <h2 class="font-semibold text-red-700">Panel User Biasa</h2>
-        <ul class="list-disc ml-5 text-sm mt-2">
-            <li><a href="{{ route('booking.saya') }}" class="text-red-600 hover:underline">Pesan Lapangan</a></li>
-            <li><a href="#" class="text-red-600 hover:underline">Pesan Konser</a></li>
-        </ul>
+    <div class="mt-8">
+        <h3 class="text-xl font-semibold text-red-700 mb-4">Panel Pengguna</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="{{ route('booking.saya') }}"
+                class="block p-4 rounded-lg bg-red-50 border border-red-200 hover:bg-red-100 transition text-red-700 shadow-sm">
+                Pesan Lapangan
+            </a>
+            <a href="{{ route('tiket.saya') }}"
+                class="block p-4 rounded-lg bg-red-50 border border-red-200 hover:bg-red-100 transition text-red-700 shadow-sm">
+                Pesan Tiket Konser
+            </a>
+        </div>
     </div>
     @endif
 </div>

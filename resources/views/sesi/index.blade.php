@@ -1,55 +1,55 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Daftar Sesi Sewa Lapangan</h2>
-        <a href="{{ route('sesi.create') }}"
-           class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition text-sm">
-            + Tambah Sesi Baru
-        </a>
+<div class="max-w-5xl mx-auto mt-10">
+    <h2 class="text-2xl font-bold mb-4">Kelola Jadwal & Sesi</h2>
+
+    @foreach($lapangans as $lapangan)
+    <div class="mb-6 bg-white border rounded shadow p-4">
+        <h3 class="text-xl font-semibold text-green-700">{{ $lapangan->nama_lapangan }}</h3>
+        <a href="{{ route('sesi.create', ['lapangan_id' => $lapangan->id]) }}" class="text-blue-600 text-sm underline">+ Tambah Sesi</a>
+
+        @if($lapangan->sesiSewa->isEmpty())
+            <p class="text-gray-500 mt-2">Belum ada sesi tersedia.</p>
+        @else
+        <table class="w-full mt-4 text-sm">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2">Tanggal</th>
+                    <th class="p-2">Jam</th>
+                    <th class="p-2">Harga</th>
+                    <th class="p-2">Status</th>
+                    <th class="p-2">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($lapangan->sesiSewa as $sesi)
+                <tr class="border-t">
+                    <td class="p-2">{{ $sesi->tanggal_sesi }}</td>
+                    <td class="p-2">{{ $sesi->jam_mulai_sesi }} - {{ $sesi->jam_selesai_sesi }}</td>
+                    <td class="p-2">Rp{{ number_format($sesi->harga_per_sesi) }}</td>
+                    <td class="p-2">
+                        @if($sesi->is_booked)
+                            <span class="text-red-600">Terbooking</span>
+                        @elseif(!$sesi->is_available)
+                            <span class="text-gray-600">Tidak Tersedia</span>
+                        @else
+                            <span class="text-green-600">Tersedia</span>
+                        @endif
+                    </td>
+                    <td class="p-2 space-x-2">
+                        <a href="{{ route('sesi.edit', $sesi->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                        <form action="{{ route('sesi.destroy', $sesi->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus sesi ini?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
     </div>
-
-    @foreach ($lapangans as $lapangan)
-        <div class="mb-6 border border-gray-200 p-5 rounded-xl bg-white shadow-sm">
-            <h3 class="text-xl font-semibold text-gray-800 mb-3">{{ $lapangan->nama_lapangan }}</h3>
-
-            @if ($lapangan->sesiSewa->isEmpty())
-                <p class="text-sm text-gray-500">Belum ada sesi untuk lapangan ini.</p>
-            @else
-                <div class="space-y-3">
-                    @foreach ($lapangan->sesiSewa as $sesi)
-                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
-                            <div class="text-sm text-gray-700">
-                                <p><strong>Tanggal:</strong> {{ $sesi->tanggal_sesi }}</p>
-                                <p><strong>Jam:</strong> {{ $sesi->jam_mulai_sesi }} - {{ $sesi->jam_selesai_sesi }}</p>
-                                <p><strong>Harga:</strong> Rp{{ number_format($sesi->harga_per_sesi) }}</p>
-                                <p><strong>Status:</strong> {{ $sesi->is_available ? 'Tersedia' : 'Tidak Tersedia' }}</p>
-                                <p><strong>Booking:</strong>
-                                    @if ($sesi->is_booked && $sesi->sewa && $sesi->sewa->user)
-                                        Sudah Dipesan oleh <span class="font-medium">{{ $sesi->sewa->user->name }}</span>
-                                    @else
-                                        Belum Dipesan
-                                    @endif
-                                </p>
-                            </div>
-                            <div class="flex gap-2 mt-2 md:mt-0">
-                                <a href="{{ route('sesi.edit', $sesi->id) }}"
-                                   class="text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm">Edit</a>
-
-                                <form action="{{ route('sesi.destroy', $sesi->id) }}" method="POST"
-                                      onsubmit="return confirm('Yakin ingin menghapus sesi ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-        </div>
     @endforeach
+</div>
 @endsection

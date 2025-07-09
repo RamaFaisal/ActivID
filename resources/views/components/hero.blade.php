@@ -16,7 +16,7 @@
             <a href="{{ route('lapangan.index')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow">
                 Sewa Lapangan →
             </a>
-            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow">
+            <a href="{{route('konser.public.index')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow">
                 Tiket Konser →
             </a>
         </div>

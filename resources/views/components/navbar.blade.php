@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white shadow-lg px-4 py-3">
+<nav x-data="{ open: false }" class="bg-white shadow-lg px-4 py-3 sticky top-0 z-50">
     <div class="container mx-auto flex md:justify-between gap-4 items-center">
         <!-- Logo -->
         <button id="sidebar-toggle" class="md:hidden text-gray-700 text-2xl focus:outline-none">
@@ -10,7 +10,7 @@
 
         <!-- Desktop Menu -->
         <div class="hidden md:flex items-center gap-10">
-            <a href="#" class="text-gray-700 hover:text-blue-600">Tiket Konser</a>
+            <a href="{{ route('konser.public.index')}}" class="text-gray-700 hover:text-blue-600">Tiket Konser</a>
             <a href="{{ route('lapangan.index')}}" class="text-gray-700 hover:text-blue-600">Sewa Lapangan</a>
             <a href="#" class="text-gray-700 hover:text-blue-600">Partner With Us</a>
             <a href="#" class="text-gray-700 hover:text-blue-600">Blog</a>
@@ -75,7 +75,7 @@
 
     <h2 class="text-lg font-semibold mb-4">Menu</h2>
     <ul class="space-y-4 mb-6">
-        <li><a href="#" class="block text-gray-800 hover:text-blue-600">Tiket Konser</a></li>
+        <li><a href="{{ route('konser.public.index')}}" class="block text-gray-800 hover:text-blue-600">Tiket Konser</a></li>
         <li><a href="{{ route('lapangan.index')}}" class="block text-gray-800 hover:text-blue-600">Sewa Lapangan</a></li>
         <li><a href="#" class="block text-gray-800 hover:text-blue-600">Partner With Us</a></li>
         <li><a href="#" class="block text-gray-800 hover:text-blue-600">Blog</a></li>

@@ -22,33 +22,32 @@
     {{-- Card Venue dari Database --}}
     <section class="mb-16">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-xl font-bold mb-6 text-center">Daftar Lapangan Tersedia</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @forelse ($lapangans as $lapangan)
-                    <div class="border rounded p-4 shadow bg-white">
+                    <a href="{{ route('lapangan.show', $lapangan->slug) }}"
+                       class="block border rounded p-4 shadow bg-white hover:shadow-lg transition duration-200 cursor-pointer">
                         @if($lapangan->gambar)
                             <img src="{{ asset('storage/' . $lapangan->gambar) }}" alt="Gambar Lapangan"
                                 class="w-full h-40 object-cover rounded mb-3">
                         @endif
-                        <h3 class="text-lg font-semibold">{{ $lapangan->nama_lapangan }}</h3>
+                        <h3 class="text-lg font-semibold text-gray-800">{{ $lapangan->nama_lapangan }}</h3>
                         <p class="text-sm text-gray-500">{{ $lapangan->jenis_lapangan }}</p>
-                        <p class="text-sm">{{ $lapangan->alamat }}</p>
-                        <p class="text-sm">Jam Operasional: {{ $lapangan->jam_operasional_mulai }} - {{ $lapangan->jam_operasional_selesai }}</p>
-                        <p class="text-sm">
+                        <p class="text-sm text-gray-700">{{ $lapangan->alamat }}</p>
+                        <p class="text-sm text-gray-700">Jam Operasional: {{ $lapangan->jam_operasional_mulai }} - {{ $lapangan->jam_operasional_selesai }}</p>
+                        <p class="text-sm text-gray-700">
                             Mulai dari:
                             @if($lapangan->sesiSewa->isNotEmpty())
                                 Rp{{ number_format($lapangan->sesiSewa->min('harga_per_sesi')) }}
                             @else
                                 Belum tersedia
                             @endif
-                        </p>                        
-                        <a href="{{ route('lapangan.show', $lapangan->slug) }}" class="text-blue-500 underline text-sm mt-2 inline-block">Lihat Detail</a>
-                    </div>
+                        </p>
+                    </a>
                 @empty
                     <p class="text-center text-gray-500 col-span-3">Tidak ada lapangan yang tersedia.</p>
                 @endforelse
             </div>
         </div>
-    </section>
+    </section>    
 </div>
 @endsection

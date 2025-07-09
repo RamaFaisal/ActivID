@@ -14,6 +14,9 @@ class SewaLapangan extends Model
     protected $fillable = [
         'id_user',
         'id_lapangan',
+        'nama_penyewa',
+        'catatan',
+        'metode_booking',
         'tanggal_sewa',
         'jam_mulai_sewa',
         'jam_selesai_sewa',

@@ -4,7 +4,7 @@
 <div class="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow">
     <h2 class="text-xl font-bold mb-4">Edit Role Pengguna</h2>
 
-    <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
+    <form method="POST" action="{{ route('superadmin.update', $user->id) }}">
         @csrf @method('PUT')
 
         <div class="mb-4">
@@ -14,11 +14,10 @@
 
         <div class="mb-4">
             <label class="block text-sm font-medium mb-1">Role</label>
-            <select name="role" class="w-full border rounded px-3 py-2">
-                @foreach($roles as $role)
-                    <option value="{{ $role->name }}"
-                        {{ $user->roles->contains('name', $role->name) ? 'selected' : '' }}>
-                        {{ ucfirst($role->name) }}
+            <select name="role" id="role" required>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                        {{ $role->name }}
                     </option>
                 @endforeach
             </select>

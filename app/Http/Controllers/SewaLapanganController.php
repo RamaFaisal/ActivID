@@ -163,42 +163,56 @@ class SewaLapanganController extends Controller
 
     public function createManual()
     {
-        $lapangans = Lapangan::where('user_id', auth()->id())->get();
-        return view('lapangan.manual', compact('lapangans'));
+        $sesiTersedia = SesiSewaLapangan::whereHas('lapangan', function ($q) {
+            $q->where('user_id', auth()->id());
+        })->where('is_available', true)->where('is_booked', false)->get();
+
+        return view('lapangan.manual', compact('sesiTersedia'));
     }
 
     public function storeManual(Request $request)
     {
         $request->validate([
-            'id_lapangan' => 'required|exists:lapangans,id',
-            'tanggal' => 'required|date',
-            'jam_mulai' => 'required',
-            'jam_selesai' => 'required',
-            'harga' => 'required|numeric|min:1000',
+            'sesi_id' => 'required|exists:sesi_sewa_lapangans,id',
+            'nama_penyewa' => 'required|string|max:100',
+            'catatan' => 'nullable|string|max:255',
         ]);
 
-        $durasi = Carbon::parse($request->jam_mulai)->diffInMinutes(\Carbon\Carbon::parse($request->jam_selesai));
-        $fee = intval($request->harga * 0.10);
-        $diterima = $request->harga - $fee;
+        $sesi = SesiSewaLapangan::with('lapangan')->findOrFail($request->sesi_id);
 
+        // Hitung durasi
+        $mulai = strtotime($sesi->jam_mulai_sesi);
+        $selesai = strtotime($sesi->jam_selesai_sesi);
+        $durasi = ($selesai - $mulai) / 60;
+
+        $total = $sesi->harga_per_sesi;
+        $fee = floor($total * 0.1);
+        $bersih = $total - $fee;
+
+        // Tandai sesi sudah dibooking
+        $sesi->update(['is_booked' => true]);
+
+        // Simpan ke sewa_lapangans
         SewaLapangan::create([
-            'id_user' => null, // Karena offline
-            'id_lapangan' => $request->id_lapangan,
-            'tanggal_sewa' => $request->tanggal,
-            'jam_mulai_sewa' => $request->jam_mulai,
-            'jam_selesai_sewa' => $request->jam_selesai,
+            'id_user' => null,
+            'id_lapangan' => $sesi->lapangan_id,
+            'nama_penyewa' => $request->nama_penyewa,
+            'catatan' => $request->catatan,
+            'tanggal_sewa' => $sesi->tanggal_sesi,
+            'jam_mulai_sewa' => $sesi->jam_mulai_sesi,
+            'jam_selesai_sewa' => $sesi->jam_selesai_sesi,
             'durasi_sewa' => $durasi,
-            'total_harga_sewa' => $request->harga,
+            'total_harga_sewa' => $total,
             'fee_platform' => $fee,
-            'jumlah_diterima' => $diterima,
+            'jumlah_diterima' => $bersih,
             'status_pembayaran_sewa' => 'paid',
             'status_verifikasi_admin' => 'disetujui',
-            'status_checkin' => false,
-            'metode_pembayaran' => 'tunai',
-            'qr_code_verifikasi_sewa' => null,
-            'is_manual' => true,
+            'status_checkin' => true,
+            'metode_pembayaran' => 'langsung',
+            'metode_booking' => 'manual',
+            'tanggal_pemesanan' => now(),
         ]);
 
-        return redirect()->route('admin.bookings')->with('success', 'Booking manual berhasil disimpan.');
+        return redirect()->route('sesi.index')->with('success', 'Booking manual berhasil disimpan.');
     }
 }

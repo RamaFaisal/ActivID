@@ -74,9 +74,15 @@ class SesiSewaController extends Controller
             'jam_mulai_sesi' => 'required',
             'jam_selesai_sesi' => 'required|after:jam_mulai_sesi',
             'harga_per_sesi' => 'required|integer|min:0',
+            'is_available' => 'required|boolean',
         ]);
 
-        $sesi->update($request->all());
+        $data = $request->all();
+        if ($request->is_available) {
+            $data['is_booked'] = false;
+        }
+
+        $sesi->update($data);
 
         return redirect()->route('sesi.index')->with('success', 'Sesi berhasil diperbarui.');
     }

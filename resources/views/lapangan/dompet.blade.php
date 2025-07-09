@@ -28,7 +28,9 @@
                 @forelse ($bookings as $booking)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-2 px-3">{{ $booking->id_sewa }}</td>
-                        <td class="py-2 px-3">{{ $booking->user->name }}</td>
+                        <td class="py-2 px-3">
+                            {{ $booking->user->name ?? $booking->nama_penyewa ?? 'Tidak diketahui' }}
+                        </td>
                         <td class="py-2 px-3">{{ $booking->tanggal_sewa }}</td>
                         <td class="py-2 px-3">{{ $booking->jam_mulai_sewa }} - {{ $booking->jam_selesai_sewa }}</td>
                         <td class="py-2 px-3">Rp{{ number_format($booking->total_harga_sewa) }}</td>
