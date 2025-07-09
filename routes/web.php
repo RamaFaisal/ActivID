@@ -26,6 +26,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mockup-jadwal', function () {
+    return view('jadwal-lapangan');
+});
+
+Route::get('/mockup-pembayaran', function () {
+    return view('pembayaran-sewa');
+});
+
+Route::get('/mockup-riwayat', function () {
+    return view('riwayat-sewa');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
