@@ -12,7 +12,11 @@ class VerifikasiTiketController extends Controller
     {
         $pesanan = PemesananTiketKonser::whereHas('jenisTiket.konser', function ($q) {
             $q->where('id_user', auth()->id());
-        })->with(['user', 'jenisTiket.konser'])->latest()->get();
+        })
+            ->where('status_pembayaran_tiket', '!=', 'paid') // hanya yang belum diverifikasi
+            ->with(['user', 'jenisTiket.konser'])
+            ->latest()
+            ->get();
 
         return view('konser.verifikasi.index', compact('pesanan'));
     }
