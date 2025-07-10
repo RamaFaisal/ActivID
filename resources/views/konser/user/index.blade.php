@@ -32,7 +32,7 @@
 
             @if($booking->status_pembayaran_tiket == 'paid')
                 <div class="mt-3">
-                    <img src="{{ asset('storage/qrcode/' . $booking->qr_code_verifikasi_tiket . '.svg') }}" alt="QR Code" width="120">
+                    <img src="{{ asset('storage/qrcode/' . $booking->qr_code_verifikasi_tiket) }}" alt="QR Code" width="120">
                     <p class="text-sm text-gray-500">Kode: {{ $booking->qr_code_verifikasi_tiket }}</p>
                 </div>
             @endif
